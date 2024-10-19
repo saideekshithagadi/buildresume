@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import ResumeForm from './components/ResumeForm';
+import ResumePreview from './components/ResumePreview';
+import Footer from './components/Footer';
+import Header from './components/Header';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [formData, setFormData] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleChange = (field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    setIsSubmitted(true);
+  };
+
+  const handleEdit = () => {
+    setIsSubmitted(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <Header/>
+      {!isSubmitted ? (
+        <ResumeForm handleChange={handleChange} handleSubmit={handleSubmit} />
+      ) : (
+        <div>
+          <ResumePreview data={formData} />
+          <button onClick={handleEdit} className="edit-btn">Edit</button>
+        </div>
+      )}
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;
